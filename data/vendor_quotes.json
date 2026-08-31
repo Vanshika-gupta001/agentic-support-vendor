@@ -1,16 +1,58 @@
 [
   {
     "id": "v001",
-    "vendor_name": "Acme Supplies",
-    "item": "office chairs (x50)",
-    "quoted_price": 250000,
-    "threshold_price": 220000
+    "vendor_name": "Acme Packaging Co.",
+    "item": "corrugated shipping boxes (5000 units)",
+    "quoted_price": 125000,
+    "threshold_price": 110000
   },
   {
     "id": "v002",
     "vendor_name": "Bright Traders",
-    "item": "laptops (x20)",
-    "quoted_price": 900000,
-    "threshold_price": 850000
+    "item": "bubble wrap rolls (200 units)",
+    "quoted_price": 60000,
+    "threshold_price": 52000
+  },
+  {
+    "id": "v003",
+    "vendor_name": "Prime Logistics Partners",
+    "item": "last-mile delivery contract (monthly)",
+    "quoted_price": 480000,
+    "threshold_price": 450000
+  },
+  {
+    "id": "v004",
+    "vendor_name": "Metro Warehousing Solutions",
+    "item": "warehouse racking (100 units)",
+    "quoted_price": 350000,
+    "threshold_price": 320000
+  },
+  {
+    "id": "v005",
+    "vendor_name": "Swift Print & Label",
+    "item": "shipping labels (50000 units)",
+    "quoted_price": 40000,
+    "threshold_price": 36000
+  },
+  {
+    "id": "v006",
+    "vendor_name": "Everest Electronics Supply",
+    "item": "barcode scanners (30 units)",
+    "quoted_price": 270000,
+    "threshold_price": 240000
+  },
+  {
+    "id": "v007",
+    "vendor_name": "GreenPack Industries",
+    "item": "eco-friendly mailers (10000 units)",
+    "quoted_price": 95000,
+    "threshold_price": 90000
+  },
+  {
+    "id": "v008",
+    "vendor_name": "National Freight Carriers",
+    "item": "bulk freight shipping (quarterly)",
+    "quoted_price": 600000,
+    "threshold_price": 540000
   }
 ]

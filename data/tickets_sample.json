@@ -7,6 +7,26 @@
   {
     "request_id": "t002",
     "request_type": "vendor",
-    "text": "Acme Supplies quoted 250000 for 50 office chairs, can we get a better price?"
+    "text": "Acme Packaging Co. quoted 125000 for 5000 shipping boxes, can we get a better price?"
+  },
+  {
+    "request_id": "t003",
+    "request_type": "support",
+    "text": "My order hasn't arrived yet and it's been 10 days, where is it?"
+  },
+  {
+    "request_id": "t004",
+    "request_type": "vendor",
+    "text": "National Freight Carriers quoted 600000 for the quarterly freight contract, negotiate it down."
+  },
+  {
+    "request_id": "t005",
+    "request_type": "support",
+    "text": "I received a damaged product, what do I do now?"
+  },
+  {
+    "request_id": "t006",
+    "request_type": "support",
+    "text": "My friend is asking me something totally unrelated to our store, like advice on stock market investing."
   }
 ]

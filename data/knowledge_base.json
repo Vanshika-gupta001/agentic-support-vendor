@@ -2,11 +2,61 @@
   {
     "id": "kb001",
     "topic": "password reset",
+    "keywords": ["password", "reset", "login", "forgot"],
     "answer": "Go to Settings > Security > Reset Password and follow the emailed link."
   },
   {
     "id": "kb002",
     "topic": "refund status",
-    "answer": "Refunds are processed within 5-7 business days after approval."
+    "keywords": ["refund", "money back", "status", "when will i get"],
+    "answer": "Refunds are processed within 5-7 business days after approval and credited to the original payment method."
+  },
+  {
+    "id": "kb003",
+    "topic": "order tracking",
+    "keywords": ["track", "order status", "where is my order", "shipment"],
+    "answer": "You can track your order under My Orders > Track Package. Tracking updates every 6-8 hours."
+  },
+  {
+    "id": "kb004",
+    "topic": "delayed delivery",
+    "keywords": ["late", "delayed", "not delivered", "still waiting"],
+    "answer": "Standard delivery takes 5-7 business days. If it has been longer, we auto-escalate to check with the courier."
+  },
+  {
+    "id": "kb005",
+    "topic": "return policy",
+    "keywords": ["return", "exchange", "send back", "wrong size"],
+    "answer": "Items can be returned within 15 days of delivery if unused and in original packaging."
+  },
+  {
+    "id": "kb006",
+    "topic": "cancel order",
+    "keywords": ["cancel", "stop order", "don't want it anymore"],
+    "answer": "Orders can be cancelled from My Orders within 1 hour of placing them, before they are packed for shipping."
+  },
+  {
+    "id": "kb007",
+    "topic": "damaged item received",
+    "keywords": ["damaged", "broken", "defective", "wrong item"],
+    "answer": "Please upload a photo of the damaged item within 48 hours of delivery; a replacement is auto-approved on verification."
+  },
+  {
+    "id": "kb008",
+    "topic": "payment failed",
+    "keywords": ["payment failed", "card declined", "transaction error"],
+    "answer": "If payment failed but amount was deducted, it auto-reverses within 3-5 business days. Try an alternate payment method."
+  },
+  {
+    "id": "kb009",
+    "topic": "change delivery address",
+    "keywords": ["change address", "wrong address", "update address"],
+    "answer": "Delivery address can only be changed before the order is shipped; contact support immediately if it has already shipped."
+  },
+  {
+    "id": "kb010",
+    "topic": "loyalty points",
+    "keywords": ["points", "rewards", "loyalty", "cashback"],
+    "answer": "Loyalty points are credited within 24 hours of delivery confirmation and can be redeemed on your next order."
   }
 ]
