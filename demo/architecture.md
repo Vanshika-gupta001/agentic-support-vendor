@@ -36,4 +36,4 @@ Only the tool called in the "Act" step differs based on `request_type`.
   explicit reasoning instead of returning a wrong or overconfident answer
   (adaptation)
 
-![C:\Users\HP\OneDrive\Desktop\vanshika\agentic-support-vendor\demo\merged_agent_architecture.png](C:\Users\HP\OneDrive\Desktop\vanshika\agentic-support-vendor\demo\merged_agent_architecture.png)
+![merged_agent_architecture.png](C:merged_agent_architecture.png)
