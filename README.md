@@ -61,11 +61,11 @@ Run the UI:
 streamlit run ui/app.py
 ```
 
-## Who's building what (fill this in)
-- **Member 1 (business/product side):** problem brief, mock data (KB + vendor
-  quotes), evaluator criteria, demo script
-- **Member 2 (tech side):** decision engine, tools, escalation logic, API +
-  Streamlit wiring, deployment
+## Who's building what
+- **Vanshika Gupta (MBA, AI & ML) — business/product side:** problem brief,
+  mock data (KB + vendor quotes), evaluator criteria, demo script
+- **Anshika Agarwal (BTech) — tech side:** decision engine, tools, escalation
+  logic, API + Streamlit wiring, deployment
 
 ## Environment variables
 See `.env.example`. Never commit your real `.env` file — it's already in
