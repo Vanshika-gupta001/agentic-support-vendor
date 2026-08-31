@@ -3,23 +3,21 @@
 Business context: a single agent serving an online retail business —
 handling customer support tickets (orders, refunds, delivery) and vendor
 procurement negotiation (packaging, logistics, warehousing supplies).
-Incoming request (support ticket or vendor query)
-|
-v
-Decision agent — classifies: simple or complex
-|
-v
-Tool execution — KB search (support) or vendor negotiation (procurement)
-|
-v
-Evaluate outcome — is the resolution acceptable?
-|
-+----+----+
-| |
-v v
+
+## Flow
+
+1. **Incoming request** — support ticket or vendor query
+2. **Decision agent** — classifies the request as simple or complex
+3. **Tool execution** — KB search (support) or vendor negotiation (procurement)
+4. **Evaluate outcome** — checks if the resolution is acceptable
+5. **Outcome** — either **auto-resolved**, or **escalated to a human** with reasoning
 
 Same loop for both domains: **Observe → Decide → Act → Evaluate → Adapt.**
 Only the tool called in the "Act" step differs based on `request_type`.
+
+## Diagram
+
+![Architecture diagram](merged_agent_architecture.png)
 
 ## Acceptance rules (see `demo/evaluator_criteria.md` for full detail)
 - **Support:** accepted only if a real keyword match is found in the
@@ -35,5 +33,3 @@ Only the tool called in the "Act" step differs based on `request_type`.
 - When the outcome fails evaluation, it changes course and escalates with
   explicit reasoning instead of returning a wrong or overconfident answer
   (adaptation)
-
-![merged_agent_architecture.png](merged_agent_architecture.png)
