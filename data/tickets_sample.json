@@ -1,0 +1,12 @@
+[
+  {
+    "request_id": "t001",
+    "request_type": "support",
+    "text": "I forgot my password, how do I reset it?"
+  },
+  {
+    "request_id": "t002",
+    "request_type": "vendor",
+    "text": "Acme Supplies quoted 250000 for 50 office chairs, can we get a better price?"
+  }
+]

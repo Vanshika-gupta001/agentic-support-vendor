@@ -1,0 +1,12 @@
+[
+  {
+    "id": "kb001",
+    "topic": "password reset",
+    "answer": "Go to Settings > Security > Reset Password and follow the emailed link."
+  },
+  {
+    "id": "kb002",
+    "topic": "refund status",
+    "answer": "Refunds are processed within 5-7 business days after approval."
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "v001",
+    "vendor_name": "Acme Supplies",
+    "item": "office chairs (x50)",
+    "quoted_price": 250000,
+    "threshold_price": 220000
+  },
+  {
+    "id": "v002",
+    "vendor_name": "Bright Traders",
+    "item": "laptops (x20)",
+    "quoted_price": 900000,
+    "threshold_price": 850000
+  }
+]
