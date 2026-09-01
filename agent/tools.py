@@ -8,6 +8,7 @@ Uses Groq's free API (OpenAI-compatible) for the parts that need an LLM
 """
 
 import os
+import re
 import json
 import logging
 from pathlib import Path
@@ -29,6 +30,20 @@ def _load_json(filename: str) -> list:
     """Small helper to load a JSON file from the data directory."""
     with open(DATA_DIR / filename) as f:
         return json.load(f)
+
+
+def _keyword_matches(keyword: str, text_lower: str) -> bool:
+    """
+    Checks whether a keyword appears in the text as a whole word/phrase,
+    not as a substring buried inside another word.
+
+    Plain substring matching (`"late" in "unrelated"`) produces false
+    positives -- e.g. "unrelated" contains "late", which would wrongly
+    match the "delayed delivery" KB entry for a completely off-topic
+    request. Word-boundary regex matching avoids that.
+    """
+    pattern = r"\b" + re.escape(keyword.lower()) + r"\b"
+    return re.search(pattern, text_lower) is not None
 
 
 def kb_search(text: str) -> dict:
@@ -53,7 +68,7 @@ def kb_search(text: str) -> dict:
 
     for entry in kb:
         keywords = entry.get("keywords", [])
-        match_count = sum(1 for kw in keywords if kw.lower() in text_lower)
+        match_count = sum(1 for kw in keywords if _keyword_matches(kw, text_lower))
         if match_count > best_match_count:
             best_match_count = match_count
             best_match = entry
