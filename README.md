@@ -64,7 +64,7 @@ streamlit run ui/app.py
 ## Who's building what
 - **Vanshika Gupta (MBA, AI & ML) — business/product side:** problem brief,
   mock data (KB + vendor quotes), evaluator criteria, demo script
-- **Anshika Agarwal (BTech) — tech side:** decision engine, tools, escalation
+- **Anshika Agarwal (MBA, Tech & Finance) — tech side:** decision engine, tools, escalation
   logic, API + Streamlit wiring, deployment
 
 ## Environment variables

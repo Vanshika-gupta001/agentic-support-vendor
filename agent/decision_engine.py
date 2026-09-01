@@ -8,25 +8,33 @@ likely need negotiation, judgment, or escalation to a human).
 This is the first step of the agent's Observe -> Decide -> Act -> Evaluate
 -> Adapt loop. The classification produced here determines which tool
 gets called next in tools.py.
+
+Uses Groq's free API (OpenAI-compatible) so the whole team can test
+without any API cost. Get a free key at https://console.groq.com
 """
 
 import os
 import json
 import logging
-from anthropic import Anthropic
+from dotenv import load_dotenv
+from groq import Groq
+
+load_dotenv()  # reads .env file so LLM_API_KEY is available even when this module is imported directly
 
 # Set up basic logging so classification decisions can be inspected later
 # (useful for the demo video and for debugging).
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("decision_engine")
 
-# The Anthropic client reads the API key from the environment.
+# The Groq client reads the API key from the environment.
 # Make sure LLM_API_KEY is set in your .env file before running this.
-client = Anthropic(api_key=os.getenv("LLM_API_KEY"))
+client = Groq(api_key=os.getenv("LLM_API_KEY"))
 
-# Model used for classification. Kept as a constant so it's easy to swap
-# later without touching the rest of the logic.
-MODEL_NAME = "claude-sonnet-4-6"
+# Model used for classification. openai/gpt-oss-120b is Groq's current
+# recommended general-purpose model on the free tier (fast + accurate
+# enough for classification tasks). Kept as a constant so it's easy to
+# swap later without touching the rest of the logic.
+MODEL_NAME = "openai/gpt-oss-120b"
 
 
 def _build_prompt(text: str, request_type: str) -> str:
@@ -109,7 +117,7 @@ def classify_request(text: str, request_type: str) -> dict:
     prompt = _build_prompt(text, request_type)
 
     try:
-        response = client.messages.create(
+        response = client.chat.completions.create(
             model=MODEL_NAME,
             max_tokens=200,
             messages=[{"role": "user", "content": prompt}],
@@ -123,7 +131,7 @@ def classify_request(text: str, request_type: str) -> dict:
             "reason": f"Classifier call failed ({exc.__class__.__name__}); defaulting to complex.",
         }
 
-    raw_text = response.content[0].text
+    raw_text = response.choices[0].message.content
     result = _parse_llm_response(raw_text)
 
     logger.info(
