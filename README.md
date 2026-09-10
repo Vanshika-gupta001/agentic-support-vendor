@@ -4,7 +4,7 @@
 
 A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**. Built for the Agentic AI Hackathon at IIT Bhubaneswar.
 
-🔗 **Live app:** [add your deployed Streamlit URL here]
+🔗 **Live app:** [[https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/](https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/)]
 
 ---
 
