@@ -4,6 +4,8 @@
 
 A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**. Built for the Agentic AI Hackathon at IIT Bhubaneswar.
 
+🔗 **Live app:** [add your deployed Streamlit URL here]
+
 ---
 
 ## 📌 Problem
@@ -28,8 +30,8 @@ It classifies each incoming request, tries to resolve it autonomously using the 
 | Backend (`main.py`) — auto-resolve + escalation flows | ✅ Tested end-to-end |
 | Problem & Solution Brief | ✅ Done |
 | Architecture doc + diagram | ✅ Done |
-| Streamlit UI (`ui/app.py`) | ⬜ In progress |
-| Deployment | ⬜ Pending |
+| Streamlit dashboard UI (`ui/app.py`) | ✅ Done |
+| Deployment (Streamlit Community Cloud) | ✅ Live |
 | Demo video | ⬜ Pending |
 
 ---
@@ -47,6 +49,12 @@ Same loop for both domains — only the tool called in the "Act" step differs ba
 
 ---
 
+## 🖥️ UI
+
+A dark, dashboard-style interface: sidebar for picking/writing a request and tracking live session stats (processed / auto-resolved / escalated), main area shows the pipeline running step by step with a status tracker, decision + tool cards, and a clear auto-resolved / escalated outcome banner.
+
+---
+
 ## 📂 Project Structure
 
 ```
@@ -54,6 +62,8 @@ agentic-support-vendor/
 ├── main.py                    # FastAPI entry point
 ├── requirements.txt
 ├── .env.example
+├── .streamlit/
+│   └── config.toml             # dark theme config
 │
 ├── agent/
 │   ├── decision_engine.py     # classifies request: simple / complex
@@ -70,7 +80,7 @@ agentic-support-vendor/
 │   └── decisions.log          # agent's decision trail (for demo + judges)
 │
 ├── ui/
-│   └── app.py                  # Streamlit interface
+│   └── app.py                  # Streamlit dashboard interface
 │
 └── demo/
     ├── demo_script.md          # script for the 3-5 min video
@@ -118,14 +128,14 @@ streamlit run ui/app.py
 
 | Member | Role | Responsibilities |
 |---|---|---|
-| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Problem brief, mock data (KB + vendor quotes), evaluator criteria, demo script |
-| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | Decision engine, tools, escalation logic, API + Streamlit wiring, deployment |
+| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Decision engine, tools, Problem brief, mock data (KB + vendor quotes), evaluator criteria |
+| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | escalation logic, API + Streamlit wiring, deployment, demo script|
 
 ---
 
 ## 🔐 Environment Variables
 
-See `.env.example`. Never commit your real `.env` file — it's already in `.gitignore`.
+See `.env.example`. Never commit your real `.env` file — it's already in `.gitignore`. For the deployed version, the key is set via Streamlit Community Cloud's Secrets manager instead of a `.env` file.
 
 ```
 LLM_API_KEY=your_groq_api_key_here
@@ -134,17 +144,10 @@ LLM_PROVIDER=groq
 
 ---
 
-## 🌿 Branching
-
-- `main` — always working / demo-ready
-- Work in feature branches (`feature/decision-engine`, `feature/ui`, etc.) and open a PR into `main` so the other person can review before merging.
-
----
-
 ## 📋 Hackathon Requirements Checklist (Round 1)
 
 - [x] Problem & Solution Brief
 - [x] System Architecture / Workflow diagram
-- [ ] Source Code / GitHub Repository *(in progress — this repo)*
+- [x] Source Code / GitHub Repository
 - [ ] 3–5 minute Demo Video
-- [ ] Runnable or Deployed Version
+- [x] Runnable or Deployed Version
