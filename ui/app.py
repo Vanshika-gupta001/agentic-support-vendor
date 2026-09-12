@@ -221,4 +221,23 @@ else:
 # Footer
 # ---------------------------------------------------------------------------
 st.divider()
+# ---------------------------------------------------------------------------
+# Audit log — read-only view of past escalations (does not affect the
+# pipeline logic at all, purely additive for transparency)
+# ---------------------------------------------------------------------------
+st.divider()
+with st.expander("📋 Audit log — past escalations"):
+    LOG_PATH = Path(__file__).parent.parent / "logs" / "decisions.log"
+    if LOG_PATH.exists() and LOG_PATH.stat().st_size > 0:
+        with open(LOG_PATH) as f:
+            lines = f.readlines()
+        st.caption(f"{len(lines)} escalation(s) logged this session and before.")
+        for line in reversed(lines[-10:]):  # show most recent 10
+            try:
+                entry = json.loads(line)
+                st.markdown(f"<div class='quote-box'><b>{entry.get('request_id', 'unknown')}</b> — {entry.get('reason', 'no reason')} <span style='color:#8a8d93; font-size:11px;'>({entry.get('timestamp', '')})</span></div>", unsafe_allow_html=True)
+            except json.JSONDecodeError:
+                continue
+    else:
+        st.caption("No escalations logged yet — process a ticket that gets escalated to see entries here.")
 st.caption("Decision log saved to `logs/decisions.log` · Agentic AI Hackathon, Tech Zephyr 4.0, IIT Bhubaneswar")
