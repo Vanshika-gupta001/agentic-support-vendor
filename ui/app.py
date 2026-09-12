@@ -122,16 +122,58 @@ with st.sidebar:
                 request_id = "manual-request"
 
 # ---------------------------------------------------------------------------
-# Header
+# Hero header — command-center style, using real session data only
 # ---------------------------------------------------------------------------
-header_col1, header_col2 = st.columns([4, 1])
-with header_col1:
-    st.markdown("<p style='font-size:20px; font-weight:600; margin:0;'>Live pipeline</p>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:12px; color:#8a8d93; margin:0;'>Observe → Decide → Act → Evaluate → Adapt</p>", unsafe_allow_html=True)
-with header_col2:
-    st.markdown("<div style='text-align:right; padding-top:6px;'><span class='live-badge'>● Live</span></div>", unsafe_allow_html=True)
+resolution_rate = (
+    round(100 * st.session_state.auto_resolved / st.session_state.processed)
+    if st.session_state.processed > 0 else None
+)
+
+st.markdown("""
+<p style='font-size:22px; font-weight:600; margin:0;'>AI operations overview</p>
+<p style='font-size:13px; color:#8a8d93; margin:2px 0 16px;'>Resolution agent is actively monitoring incoming requests.</p>
+""", unsafe_allow_html=True)
+
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("Processed", st.session_state.processed)
+m2.metric("Auto-resolved", st.session_state.auto_resolved)
+m3.metric("Escalated", st.session_state.escalated)
+m4.metric("Resolution rate", f"{resolution_rate}%" if resolution_rate is not None else "—")
+
+st.markdown("""
+<div style="margin-top:10px; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between;">
+    <div>
+        <span style="font-size:15px; font-weight:600;">Live pipeline</span>
+        <span style="font-size:12px; color:#8a8d93; margin-left:8px;">Observe → Decide → Act → Evaluate → Adapt</span>
+    </div>
+    <span class="live-badge">● Live</span>
+</div>
+""", unsafe_allow_html=True)
 
 st.divider()
+
+# ---------------------------------------------------------------------------
+# Activity feed — reads real entries from logs/decisions.log (read-only,
+# does not touch the pipeline logic)
+# ---------------------------------------------------------------------------
+LOG_PATH = Path(__file__).parent.parent / "logs" / "decisions.log"
+if LOG_PATH.exists() and LOG_PATH.stat().st_size > 0:
+    with open(LOG_PATH) as f:
+        log_lines = f.readlines()
+    if log_lines:
+        with st.expander(f"Activity feed — {len(log_lines)} escalation(s) logged", expanded=False):
+            for line in reversed(log_lines[-8:]):
+                try:
+                    entry = json.loads(line)
+                    ts = entry.get("timestamp", "")[11:19]  # just the time part
+                    st.markdown(
+                        f"<div class='quote-box'><b>{ts}</b> — Ticket {entry.get('request_id', '?')} escalated "
+                        f"<span style='color:#8a8d93;'>· reason: {entry.get('reason', 'unknown')}</span></div>",
+                        unsafe_allow_html=True,
+                    )
+                except json.JSONDecodeError:
+                    continue
+
 
 # ---------------------------------------------------------------------------
 # Main content: pipeline execution
@@ -179,7 +221,7 @@ if request_type and text:
                 else:
                     st.markdown("<span class='pill pill-red'>NO QUOTE FOUND</span>", unsafe_allow_html=True)
 
-        # Full-width detail card
+    # Full-width detail card
     with st.container(border=True):
         if request_type == "support" and tool_result["matched"]:
             st.markdown(f"<div class='quote-box'>{tool_result['answer']}</div>", unsafe_allow_html=True)
@@ -221,23 +263,4 @@ else:
 # Footer
 # ---------------------------------------------------------------------------
 st.divider()
-# ---------------------------------------------------------------------------
-# Audit log — read-only view of past escalations (does not affect the
-# pipeline logic at all, purely additive for transparency)
-# ---------------------------------------------------------------------------
-st.divider()
-with st.expander("📋 Audit log — past escalations"):
-    LOG_PATH = Path(__file__).parent.parent / "logs" / "decisions.log"
-    if LOG_PATH.exists() and LOG_PATH.stat().st_size > 0:
-        with open(LOG_PATH) as f:
-            lines = f.readlines()
-        st.caption(f"{len(lines)} escalation(s) logged this session and before.")
-        for line in reversed(lines[-10:]):  # show most recent 10
-            try:
-                entry = json.loads(line)
-                st.markdown(f"<div class='quote-box'><b>{entry.get('request_id', 'unknown')}</b> — {entry.get('reason', 'no reason')} <span style='color:#8a8d93; font-size:11px;'>({entry.get('timestamp', '')})</span></div>", unsafe_allow_html=True)
-            except json.JSONDecodeError:
-                continue
-    else:
-        st.caption("No escalations logged yet — process a ticket that gets escalated to see entries here.")
 st.caption("Decision log saved to `logs/decisions.log` · Agentic AI Hackathon, Tech Zephyr 4.0, IIT Bhubaneswar")
