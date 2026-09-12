@@ -179,10 +179,19 @@ if request_type and text:
                 else:
                     st.markdown("<span class='pill pill-red'>NO QUOTE FOUND</span>", unsafe_allow_html=True)
 
-    # Full-width detail card
+        # Full-width detail card
     with st.container(border=True):
         if request_type == "support" and tool_result["matched"]:
             st.markdown(f"<div class='quote-box'>{tool_result['answer']}</div>", unsafe_allow_html=True)
+            action_result = tool_result.get("action_result")
+            if action_result:
+                action_badge = "pill-red" if action_result["status"] == "blocked" else "pill-green"
+                st.markdown(
+                    f"<div style='margin-top:10px;'><span class='pill {action_badge}'>ACTION: {action_result['action'].upper()} — {action_result['status'].upper()}</span></div>",
+                    unsafe_allow_html=True,
+                )
+                if action_result["status"] == "blocked":
+                    st.caption(f"Blocked reason: {action_result['block_reason']}")
         elif request_type == "vendor" and tool_result["quote_found"]:
             quote = tool_result["quote"]
             st.write(f"**{quote['vendor_name']}** — {quote['item']}")

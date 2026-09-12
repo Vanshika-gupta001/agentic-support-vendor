@@ -4,8 +4,9 @@ escalation. This is the "adapt" trigger in the agent's decision loop.
 
 Implements the acceptance rules defined in demo/evaluator_criteria.md:
 
-Support tickets: accepted only if a real keyword match was found AND the
-request is actually about our store/order/account (not an unrelated ask).
+Support tickets: accepted only if a real keyword match was found, AND the
+resolution action (if any) actually completed rather than being blocked
+by a simulated system constraint.
 
 Vendor negotiation: accepted only if quoted_price <= threshold_price * 1.05
 (within a 5% auto-approve buffer).
@@ -25,7 +26,11 @@ def _evaluate_support(tool_result: dict) -> dict:
     Evaluates a support/KB tool result.
 
     Rejects if no KB match was found, since that means the agent has no
-    real basis for an answer and should not guess.
+    real basis for an answer and should not guess. Also rejects if the
+    resolution action was blocked by a simulated system constraint (e.g.
+    an order that already shipped cannot be cancelled) -- this is the
+    agent verifying the outcome of its own action, not just assuming it
+    worked.
     """
     if not tool_result.get("matched"):
         return {
@@ -33,9 +38,14 @@ def _evaluate_support(tool_result: dict) -> dict:
             "reason": "no_kb_match",
         }
 
-    # A match was found by tools.py's keyword search. We treat any real
-    # keyword match as sufficient confidence for this hackathon's scope;
-    # a production system would add a confidence score here.
+    action_result = tool_result.get("action_result")
+    if action_result and action_result.get("status") == "blocked":
+        return {
+            "accepted": False,
+            "reason": f"action_blocked_{action_result.get('block_reason', 'unknown')}",
+        }
+
+    # A match was found and the action (if any) completed successfully.
     return {
         "accepted": True,
         "reason": "kb_match_found",

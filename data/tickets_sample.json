@@ -28,5 +28,10 @@
     "request_id": "t006",
     "request_type": "support",
     "text": "My friend is asking me something totally unrelated to our store, like advice on stock market investing."
+  },
+  {
+    "request_id": "t007",
+    "request_type": "support",
+    "text": "Please cancel my order, I don't want it anymore. Wait, I just saw it says it has already shipped."
   }
 ]

@@ -1,6 +1,7 @@
 """
 Tools the agent can call, based on request_type:
-- "support": search knowledge_base.json for a matching answer
+- "support": search knowledge_base.json for a matching answer, then
+  execute a simulated resolution action
 - "vendor": compare vendor_quotes.json and draft a counter-offer
 
 Uses Groq's free API (OpenAI-compatible) for the parts that need an LLM
@@ -46,6 +47,45 @@ def _keyword_matches(keyword: str, text_lower: str) -> bool:
     return re.search(pattern, text_lower) is not None
 
 
+def execute_resolution_action(matched_entry: dict, request_text: str) -> dict:
+    """
+    Executes a simulated state-changing action for the matched support
+    topic, instead of only returning information. This satisfies the
+    requirement that the agent must actually resolve an issue (take an
+    action against a simulated system) rather than merely answer a
+    question.
+
+    Some actions can be blocked by a simulated business constraint (e.g.
+    an order that has already shipped cannot be cancelled) -- this lets
+    the agent demonstrate adapting to a blocked action by escalating,
+    instead of silently pretending the action succeeded.
+
+    Returns:
+        {"action": str, "status": "completed" | "blocked", "block_reason": str | None}
+    """
+    topic = matched_entry["topic"]
+    text_lower = request_text.lower()
+
+    if topic == "cancel order":
+        if "shipped" in text_lower or "already sent" in text_lower or "on its way" in text_lower:
+            return {"action": "cancel_order", "status": "blocked", "block_reason": "order_already_shipped"}
+        return {"action": "order_cancelled", "status": "completed", "block_reason": None}
+
+    if topic == "damaged item received":
+        return {"action": "replacement_issued", "status": "completed", "block_reason": None}
+
+    if topic == "refund status":
+        return {"action": "refund_confirmed", "status": "completed", "block_reason": None}
+
+    if topic == "return policy":
+        return {"action": "return_authorized", "status": "completed", "block_reason": None}
+
+    # Topics that are genuinely just informational (e.g. password reset)
+    # don't need a state-changing action -- providing the instructions IS
+    # the resolution.
+    return {"action": "information_provided", "status": "completed", "block_reason": None}
+
+
 def kb_search(text: str) -> dict:
     """
     Searches the knowledge base for a matching entry using simple keyword
@@ -53,11 +93,16 @@ def kb_search(text: str) -> dict:
     needed) since the hackathon rules explicitly say vector databases and
     RAG pipelines are not mandatory.
 
+    If a match is found, also executes a simulated resolution action
+    (see execute_resolution_action) so the agent actually resolves the
+    issue rather than only answering it.
+
     Returns:
         {
             "matched": bool,
             "matched_entry": dict | None,
             "answer": str | None,
+            "action_result": dict | None,
         }
     """
     kb = _load_json("knowledge_base.json")
@@ -75,10 +120,13 @@ def kb_search(text: str) -> dict:
 
     if best_match is not None:
         logger.info("KB match found: '%s' (%d keyword hits)", best_match["topic"], best_match_count)
+        action_result = execute_resolution_action(best_match, text)
+        logger.info("Action executed: %s (status: %s)", action_result["action"], action_result["status"])
         return {
             "matched": True,
             "matched_entry": best_match,
             "answer": best_match["answer"],
+            "action_result": action_result,
         }
 
     logger.info("No KB match found for request text.")
@@ -86,6 +134,7 @@ def kb_search(text: str) -> dict:
         "matched": False,
         "matched_entry": None,
         "answer": None,
+        "action_result": None,
     }
 
 
