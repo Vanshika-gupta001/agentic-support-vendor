@@ -1,10 +1,13 @@
-# 🤖 Autonomous Vendor & Support Resolution Agent
+# ⚡ Team AgentForge — Autonomous Vendor & Support Resolution Agent
 
 **Agentic AI Hackathon — Tech Zephyr 4.0, IIT Bhubaneswar**
 
-A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**. Built for the Agentic AI Hackathon at IIT Bhubaneswar.
+A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**.
 
-🔗 **Live app:** [[https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/](https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/)]
+🔗 **Live app:** [https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/]
+📦 **GitHub:** github.com/Vanshika-gupta001/agentic-support-vendor
+
+**Problem statement alignment:** Track 3 — Smart Automation, Problem Statement 5: Autonomous Customer Resolution Agent.
 
 ---
 
@@ -14,9 +17,9 @@ Two of the highest-friction, most repetitive workflows inside a growing business
 
 This agent handles both through one unified loop:
 
-**Observe → Decide → Act → Evaluate → Adapt**
+**Observe → Decide → Act → Verify → Evaluate → Adapt**
 
-It classifies each incoming request, tries to resolve it autonomously using the right tool (knowledge-base search or vendor negotiation), evaluates whether the outcome is acceptable, and escalates to a human — with clear reasoning — when it isn't.
+It classifies each incoming request, retrieves relevant context, executes a real simulated resolution action (not just a text reply), verifies whether that action actually completed, evaluates the outcome against policy, and escalates to a human — with clear reasoning — when it can't safely resolve the case.
 
 ---
 
@@ -26,13 +29,15 @@ It classifies each incoming request, tries to resolve it autonomously using the 
 |---|---|
 | Mock data (KB, vendor quotes, sample tickets) | ✅ Done |
 | Evaluator criteria (`demo/evaluator_criteria.md`) | ✅ Done |
-| Decision engine, tools, evaluator | ✅ Implemented & tested |
+| Decision engine, tools, action execution, evaluator | ✅ Implemented & tested |
+| Action verification (blocked-action escalation) | ✅ Implemented & tested |
 | Backend (`main.py`) — auto-resolve + escalation flows | ✅ Tested end-to-end |
 | Problem & Solution Brief | ✅ Done |
 | Architecture doc + diagram | ✅ Done |
 | Streamlit dashboard UI (`ui/app.py`) | ✅ Done |
 | Deployment (Streamlit Community Cloud) | ✅ Live |
-| Demo video | ⬜ Pending |
+| Presentation deck | ✅ Done |
+| Demo video | ✅ Done |
 
 ---
 
@@ -42,16 +47,16 @@ See [`demo/architecture.md`](demo/architecture.md) for the full diagram and expl
 
 **Flow:**
 ```
-Incoming request → Decision agent → Tool execution → Evaluate outcome → Auto-resolved | Escalate to human
+Incoming request → Decision agent → Tool execution (KB search + action) → Verify action → Evaluate outcome → Auto-resolved | Escalate to human
 ```
 
-Same loop for both domains — only the tool called in the "Act" step differs based on `request_type` (`support` or `vendor`).
+Same loop for both domains — only the tool called in the "Act" step differs based on `request_type` (`support` or `vendor`). For support requests, the agent executes a real simulated action (replacement, refund confirmation, cancellation) and verifies it actually succeeded — if it's blocked by a business constraint (e.g. order already shipped), the agent adapts by escalating instead of pretending it worked.
 
 ---
 
 ## 🖥️ UI
 
-A dark, dashboard-style interface: sidebar for picking/writing a request and tracking live session stats (processed / auto-resolved / escalated), main area shows the pipeline running step by step with a status tracker, decision + tool cards, and a clear auto-resolved / escalated outcome banner.
+A dark, dashboard-style interface: sidebar for picking/writing a request and tracking live session stats, a command-center style overview (processed / auto-resolved / escalated / resolution rate), a live activity feed of past escalations, and a step-by-step pipeline view with decision, action, and outcome cards.
 
 ---
 
@@ -67,8 +72,8 @@ agentic-support-vendor/
 │
 ├── agent/
 │   ├── decision_engine.py     # classifies request: simple / complex
-│   ├── tools.py                # KB search + vendor negotiation logic
-│   ├── evaluator.py            # checks if resolution is acceptable
+│   ├── tools.py                # KB search, action execution, vendor negotiation
+│   ├── evaluator.py            # checks if resolution/action is acceptable
 │   └── escalation.py           # handles handoff + reasoning log
 │
 ├── data/
@@ -95,7 +100,7 @@ agentic-support-vendor/
 This project uses **Groq's free API** (no credit card required) for LLM calls. Get a free key at [console.groq.com](https://console.groq.com).
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Vanshika-gupta001/agentic-support-vendor.git
 cd agentic-support-vendor
 
 python -m venv venv
@@ -111,12 +116,6 @@ cp .env.example .env          # then paste your Groq key into LLM_API_KEY
 uvicorn main:app --reload
 ```
 
-### Test the full pipeline
-In a second terminal, while the API is running:
-```bash
-curl.exe -X POST http://127.0.0.1:8000/process -H "Content-Type: application/json" -d "{\"request_id\": \"t001\", \"text\": \"I forgot my password, how do I reset it?\", \"request_type\": \"support\"}"
-```
-
 ### Run the UI
 ```bash
 streamlit run ui/app.py
@@ -124,18 +123,18 @@ streamlit run ui/app.py
 
 ---
 
-## 👥 Who's Building What
+## 👥 Team AgentForge
 
 | Member | Role | Responsibilities |
 |---|---|---|
-| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Decision engine, tools, Problem brief, mock data (KB + vendor quotes), evaluator criteria |
-| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | escalation logic, API + Streamlit wiring, deployment, demo script|
+| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Problem brief, mock data, evaluator criteria, demo script, presentation |
+| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | Decision engine, tools, escalation logic, API + Streamlit wiring, deployment, demo video |
 
 ---
 
 ## 🔐 Environment Variables
 
-See `.env.example`. Never commit your real `.env` file — it's already in `.gitignore`. For the deployed version, the key is set via Streamlit Community Cloud's Secrets manager instead of a `.env` file.
+See `.env.example`. Never commit your real `.env` file — it's already in `.gitignore`. For the deployed version, the key is set via Streamlit Community Cloud's Secrets manager instead.
 
 ```
 LLM_API_KEY=your_groq_api_key_here
@@ -149,5 +148,5 @@ LLM_PROVIDER=groq
 - [x] Problem & Solution Brief
 - [x] System Architecture / Workflow diagram
 - [x] Source Code / GitHub Repository
-- [ ] 3–5 minute Demo Video
+- [x] 3–5 minute Demo Video
 - [x] Runnable or Deployed Version
