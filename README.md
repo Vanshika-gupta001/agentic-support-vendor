@@ -5,6 +5,7 @@
 A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**.
 
 🔗 **Live app:** [https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/]
+
 📦 **GitHub:** github.com/Vanshika-gupta001/agentic-support-vendor
 
 **Problem statement alignment:** Track 3 — Smart Automation, Problem Statement 5: Autonomous Customer Resolution Agent.
