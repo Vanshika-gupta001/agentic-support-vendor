@@ -128,8 +128,8 @@ streamlit run ui/app.py
 
 | Member | Role | Responsibilities |
 |---|---|---|
-| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Problem brief, mock data, evaluator criteria, demo script, presentation |
-| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | Decision engine, tools, escalation logic, API + Streamlit wiring, deployment, demo video |
+| **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Decision engine, tools, Problem brief, mock data, evaluator criteria, presentation |
+| **Anshika Agarwal** (MBA, Tech & Finance) | Tech |  escalation logic, API + Streamlit wiring, deployment, demo script,demo video |
 
 ---
 
