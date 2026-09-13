@@ -4,7 +4,8 @@
 
 A single agentic system that handles two high-friction business workflows for an online retail business: **customer support tickets** and **vendor/procurement negotiation**.
 
-🔗 **Live app:** [https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/]
+🔗 **Live app:** https://agentic-support-vendor-upx3udgmw5weges7qt7bbu.streamlit.app/     
+🎥 **Demo video:** https://drive.google.com/file/d/1aYg1qFrkLJ1Zca3XGmOTB3cRpOKgQEmK/view?usp=sharing
 
 📦 **GitHub:** github.com/Vanshika-gupta001/agentic-support-vendor
 
@@ -129,7 +130,7 @@ streamlit run ui/app.py
 | Member | Role | Responsibilities |
 |---|---|---|
 | **Vanshika Gupta** (MBA, AI & ML) | Business/Product | Decision engine, tools, Problem brief, mock data, evaluator criteria, presentation |
-| **Anshika Agarwal** (MBA, Tech & Finance) | Tech |  escalation logic, API + Streamlit wiring, deployment, demo script,demo video |
+| **Anshika Agarwal** (MBA, Tech & Finance) | Tech | Escalation logic, API + Streamlit wiring, deployment, demo script, demo video |
 
 ---
 
